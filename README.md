@@ -1,27 +1,25 @@
-# OCaml DevContainer
-This repo can be used to launch an OCaml development environment using Docker and VSCode. It's based on the `ocaml/opam2` Docker image, and uses the VSCode devcontainers feature. The environment comes with some commmon `opam` packages preinstalled.
+# OCaml Multiplayer Games
 
-## Features
-- Common IDE features (autocomplete, syntax highlighting, jump-to-definition, etc.) provided by the [reason-vscode](https://github.com/jaredly/reason-language-server) language server.
-- Code formatting on save using `ocamlformat` and the [badochov.ocaml-formatter](https://github.com/badochov/ocamlformatter-vscode) extension.
-- A fully functional Debian environment that can be accessed through the VSCode integrated terminal or using `docker exec...`.
-- Easy to adapt to your use case.
+# Useful cmds
+dune build
+dune test
 
-## Requirements
-- [Docker](https://docs.docker.com/get-docker/)
-- [VSCode](https://github.com/Microsoft/vscode)
-- Remote - Containers ([ms-vscode-remote.remote-containers](https://github.com/Microsoft/vscode-remote-release)) extension
+(modes js)
 
-## Usage
-1. Clone this repo.
-2. Start VSCode
-3. Run the `Remote-Containers: Open Folder in Container` command.
-4. Select this folder.
+opam repo add with-extensions https://github.com/janestreet/opam-repository.git#with-extensions --dont-select
+opam update
+opam switch create 5.2.0+flambda2 --repos with-extensions,default 
+eval $(opam env --switch=5.2.0+flambda2)
+opam install --yes  ocamlformat.0.26.2+jst  merlin.5.2.1-502+jst  ocaml-lsp-server.1.19.0+jst  dune
 
-## Included Opam Packages
-- base
-- core_kernel
-- ounit
-- qcheck
-- dune
-- ocamlformat
+opam install --deps-only ./bonsai_examples.opam 
+
+# Links
+https://dune.readthedocs.io/en/latest/
+https://ocsigen.org/js_of_ocaml/
+https://github.com/janestreet/bonsai_web/blob/master/docs/guide/00-introduction.md
+
+
+Clone the repo and open with https://github.com/codespaces
+It has an OCaml development environment using Docker. 
+It's based on the `ocaml/opam` Docker image.
