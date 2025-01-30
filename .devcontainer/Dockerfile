@@ -17,7 +17,11 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y libssl-dev \
   && apt-get install -y pkg-config \
   && apt-get install -y zlib1g-dev \
-  && curl -fsSL https://opam.ocaml.org/install.sh > install_opam.sh \
+  && rm -rf /var/lib/apt/lists/*
+
+# If I don't split into multiple RUN commands I get:
+# Sys_error("No space left on device")
+RUN  curl -fsSL https://opam.ocaml.org/install.sh > install_opam.sh \
   && chmod +x install_opam.sh \
   && ./install_opam.sh --download-only --version 2.3.0 \
   && mv opam-2.3.0-x86_64-linux ./opam \
@@ -26,8 +30,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && ./opam repo add with-extensions https://github.com/janestreet/opam-repository.git#with-extensions --dont-select \
   && ./opam update \
   && ./opam switch create 5.2.0+flambda2 --repos with-extensions,default \
-  && eval $(./opam env --switch=5.2.0+flambda2) \
-  && ./opam install --yes \
+  && eval $(./opam env --switch=5.2.0+flambda2)
+
+RUN ./opam install --yes \
   ocamlformat.0.26.2+jst \
   merlin.5.2.1-502+jst \
   ocaml-lsp-server.1.19.0+jst \
@@ -36,5 +41,4 @@ RUN DEBIAN_FRONTEND=noninteractive \
   base bonsai core core_kernel ocaml-embed-file \
   ppx_jane virtual_dom cohttp cohttp-async \
   js_of_ocaml js_of_ocaml-ppx uri \
-  && eval $(./opam env --switch=5.2.0+flambda2) \
-  && rm -rf /var/lib/apt/lists/*
+  && eval $(./opam env --switch=5.2.0+flambda2) 
