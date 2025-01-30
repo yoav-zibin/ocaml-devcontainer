@@ -43,6 +43,7 @@ RUN ./opam install --yes \
   base core core_kernel ocaml-embed-file \
   ppx_jane virtual_dom cohttp cohttp-async uri
 
-RUN ./opam install --yes \
-  bonsai js_of_ocaml js_of_ocaml-ppx  \
-  && eval $(./opam env --switch=5.2.0+flambda2) 
+RUN ./opam install --yes bonsai
+RUN ./opam install --yes js_of_ocaml-ppx 
+RUN ./opam install --yes js_of_ocaml
+RUN eval $(./opam env --switch=5.2.0+flambda2) 
