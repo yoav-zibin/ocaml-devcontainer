@@ -32,6 +32,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
   merlin.5.2.1-502+jst \
   ocaml-lsp-server.1.19.0+jst \
   dune \
-  && ./opam install --deps-only --yes ./bonsai-examples.opam \
+  async async_extra async_js async_kernel async_rpc_kernel async_rpc_websocket \
+  base bonsai core core_kernel ocaml-embed-file \
+  ppx_jane virtual_dom cohttp cohttp-async \
+  js_of_ocaml js_of_ocaml-ppx uri \
   && eval $(./opam env --switch=5.2.0+flambda2) \
   && rm -rf /var/lib/apt/lists/*
