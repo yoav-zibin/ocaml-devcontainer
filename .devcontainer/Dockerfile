@@ -19,8 +19,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-# If I don't split into multiple RUN commands I get:
-# Sys_error("No space left on device")
 RUN  curl -fsSL https://opam.ocaml.org/install.sh > install_opam.sh \
   && chmod +x install_opam.sh \
   && ./install_opam.sh --download-only --version 2.3.0 \
@@ -36,9 +34,15 @@ RUN ./opam install --yes \
   ocamlformat.0.26.2+jst \
   merlin.5.2.1-502+jst \
   ocaml-lsp-server.1.19.0+jst \
-  dune \
+  dune
+
+# If I don't split into multiple RUN commands I get:
+# Sys_error("No space left on device")
+RUN ./opam install --yes \
   async async_extra async_js async_kernel async_rpc_kernel async_rpc_websocket \
-  base bonsai core core_kernel ocaml-embed-file \
-  ppx_jane virtual_dom cohttp cohttp-async \
-  js_of_ocaml js_of_ocaml-ppx uri \
+  base core core_kernel ocaml-embed-file \
+  ppx_jane virtual_dom cohttp cohttp-async uri
+
+RUN ./opam install --yes \
+  bonsai js_of_ocaml js_of_ocaml-ppx  \
   && eval $(./opam env --switch=5.2.0+flambda2) 
