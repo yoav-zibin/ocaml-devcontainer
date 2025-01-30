@@ -1,10 +1,37 @@
-FROM ocaml/opam:latest
+FROM ubuntu:latest
 
-# Install Opam packages
-RUN opam init && \
-  opam update && \
-  opam install \
-  base core_kernel \
-  ounit qcheck dune \
-  ocamlformat \
-  js_of_ocaml js_of_ocaml-ppx js_of_ocaml-lwt
+RUN DEBIAN_FRONTEND=noninteractive \
+  apt-get update \
+  && apt-get install -y bubblewrap \
+  && apt-get install -y git \
+  && apt-get install -y mercurial \
+  && apt-get install -y rsync \
+  && apt-get install -y ssh \
+  && apt-get install -y curl \
+  && apt-get install -y unzip \
+  && apt-get install -y make \
+  && apt-get install -y build-essential \
+  && apt-get install -y autoconf \
+  && apt-get install -y libffi-dev \
+  && apt-get install -y libgmp-dev \
+  && apt-get install -y libssl-dev \
+  && apt-get install -y pkg-config \
+  && apt-get install -y zlib1g-dev \
+  && curl -fsSL https://opam.ocaml.org/install.sh > install_opam.sh \
+  && chmod +x install_opam.sh \
+  && ./install_opam.sh --download-only --version 2.3.0 \
+  && mv opam-2.3.0-x86_64-linux ./opam \
+  && chmod +x opam \
+  && ./opam init --disable-sandboxing --auto-setup \
+  && ./opam repo add with-extensions https://github.com/janestreet/opam-repository.git#with-extensions --dont-select \
+  && ./opam update \
+  && ./opam switch create 5.2.0+flambda2 --repos with-extensions,default \
+  && eval $(./opam env --switch=5.2.0+flambda2) \
+  && ./opam install --yes \
+  ocamlformat.0.26.2+jst \
+  merlin.5.2.1-502+jst \
+  ocaml-lsp-server.1.19.0+jst \
+  dune \
+  && ./opam install --deps-only --yes ./bonsai-examples.opam \
+  && eval $(./opam env --switch=5.2.0+flambda2) \
+  && rm -rf /var/lib/apt/lists/*
