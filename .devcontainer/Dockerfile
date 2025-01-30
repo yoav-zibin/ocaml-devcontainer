@@ -36,14 +36,17 @@ RUN ./opam install --yes \
   ocaml-lsp-server.1.19.0+jst \
   dune
 
-# If I don't split into multiple RUN commands I get:
-# Sys_error("No space left on device")
 RUN ./opam install --yes \
   async async_extra async_js async_kernel async_rpc_kernel async_rpc_websocket \
   base core core_kernel ocaml-embed-file \
   ppx_jane virtual_dom cohttp cohttp-async uri
 
 RUN ./opam install --yes bonsai
-RUN ./opam install --yes js_of_ocaml-ppx 
+RUN ./opam install --yes js_of_ocaml-ppx && \
+  apt autoremove && apt autoclean && ./opam clean && rm -rf /tmp/* && ./opam config set jobs 1
+
+RUN apt-get install -y ncdu
+# If I don't split into multiple RUN commands I get:
+# Sys_error("No space left on device")
 RUN ./opam install --yes js_of_ocaml
 RUN eval $(./opam env --switch=5.2.0+flambda2) 
