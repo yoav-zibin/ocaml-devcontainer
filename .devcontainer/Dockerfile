@@ -33,16 +33,17 @@ RUN DEBIAN_FRONTEND=noninteractive \
     ocamlformat.0.26.2+jst \
     merlin.5.2.1-502+jst \
     ocaml-lsp-server.1.19.0+jst \
-    dune \
+    dune \  
+  && ./opam install --yes \
     async async_extra async_js async_kernel async_rpc_kernel async_rpc_websocket \
     base core core_kernel ocaml-embed-file \
     ppx_jane virtual_dom cohttp cohttp-async uri \
-    bonsai js_of_ocaml-ppx \
+    bonsai js_of_ocaml js_of_ocaml-ppx \
   && apt autoremove && apt autoclean && ./opam clean && rm -rf /tmp/* \
   && eval $(./opam env --switch=5.2.0+flambda2) 
  
 # I always get:
 # Sys_error("No space left on device")
 # I even tried: 
-RUN ./opam config set jobs 1 && ./opam install --yes js_of_ocaml
+# RUN ./opam config set jobs 1 && ./opam install --yes js_of_ocaml
 # So we need to do it after the docker finished. 
