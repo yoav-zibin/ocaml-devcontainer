@@ -44,6 +44,5 @@ RUN DEBIAN_FRONTEND=noninteractive \
 # I always get:
 # Sys_error("No space left on device")
 # I even tried: 
-# RUN ./opam config set jobs 1
-# RUN ./opam install --yes js_of_ocaml
+RUN ./opam config set jobs 1 && ./opam install --yes js_of_ocaml
 # So we need to do it after the docker finished. 
