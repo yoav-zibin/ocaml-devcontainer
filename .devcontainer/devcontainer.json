@@ -16,8 +16,6 @@
     }
   },
   "extensions": [
-    "jaredly.reason-vscode",
-    "badochov.ocaml-formatter",
     "editorconfig.editorconfig"
   ]
 }
